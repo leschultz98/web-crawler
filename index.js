@@ -9,6 +9,8 @@ const server = http.createServer(async (req, res) => {
 
     if (!page) {
       const browser = await puppeteer.launch({
+        headless: false,
+        timeout: 0,
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
       })
       page = await browser.newPage()
