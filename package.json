@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "postinstall": "PUPPETEER_CACHE_DIR=./node_modules/.puppeteer-cache npx puppeteer browsers install chrome"
+    "start": "npx puppeteer browsers install chrome && node index.js"
   },
   "dependencies": {
     "puppeteer": "^24.43.1"
