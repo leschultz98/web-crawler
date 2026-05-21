@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "install": "PUPPETEER_CACHE_DIR=./node_modules/.puppeteer-cache npm i --omit=dev"
   },
   "dependencies": {
     "puppeteer": "^24.43.1"
