@@ -1,18 +1,21 @@
 import http from 'http'
 import puppeteer from 'puppeteer'
 
-let page
+let browser
 
 const server = http.createServer(async (req, res) => {
+  let page
+
   try {
     const targetUrl = req.url.slice(1)
 
-    if (!page) {
-      const browser = await puppeteer.launch({
+    if (!browser) {
+      browser = await puppeteer.launch({
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
       })
-      page = await browser.newPage()
     }
+
+    page = await browser.newPage()
 
     await page.goto(targetUrl, {
       waitUntil: 'networkidle2',
@@ -28,6 +31,8 @@ const server = http.createServer(async (req, res) => {
   } catch (err) {
     res.writeHead(500)
     res.end(err.message)
+  } finally {
+    page?.close()
   }
 })
 
