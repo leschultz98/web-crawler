@@ -1,13 +1,24 @@
 import http from 'http'
+import puppeteer from 'puppeteer'
+
+let page
 
 const server = http.createServer(async (req, res) => {
   try {
     const targetUrl = req.url.slice(1)
 
-    const response = await fetch(targetUrl)
-    const text = await response.text()
+    if (!page) {
+      const browser = await puppeteer.launch()
+      page = await browser.newPage()
+    }
 
-    res.writeHead(response.status, {
+    await page.goto(targetUrl, {
+      waitUntil: 'networkidle2',
+    })
+
+    const text = await page.content()
+
+    res.writeHead(200, {
       'Content-Type': 'text/plain; charset=utf-8',
     })
 
@@ -18,4 +29,5 @@ const server = http.createServer(async (req, res) => {
   }
 })
 
-server.listen(process.env.PORT || 3000)
+const port = process.env.PORT || 3000
+server.listen(port, () => console.log('Server started at http://localhost:' + port))
